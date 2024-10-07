@@ -19,7 +19,6 @@ actor Main
   numNodes = try env.args(1)?.u64()? else 40 end
   topology = try env.args(2)? else "Line" end
   algorithm = try env.args(3)? else "Gossip" end
-  // env.out.print(Time.millis().string())
   var startTime: U64 = Time.millis()
 
   if algorithm.string() == "Gossip" then
@@ -79,9 +78,7 @@ actor Main
                 var dummy: Array[U64] = [i.u64(); j.u64(); k.u64()]
                 dummy
                 end
-              // try temp(i)?(j)?(k)? = Node((counter), numNodes, triplets) end
               row.push(Node((counter), numNodes, triplets, startTime))
-              // env.out.print(i.string() + " " + j.string() + " " + k.string())
               if counter >= numNodes then
                 x_final = i.u64()
                 y_final = j.u64()
@@ -95,8 +92,6 @@ actor Main
         end
         temp
       end
-      // env.out.print("x y z values are " + x_cord.string() + " " + y_cord.string() + " " + y_cord.string())
-      // env.out.print("Alternate x y z values are " + x_final.string() + " " + y_final.string() + " " + z_final.string())
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorGossip3DGrid(nodePool, env, x_cord, y_cord, z_cord) end
     | "Imp3d Grid" => 
       env.out.print("Starting " + topology.string() + " " + algorithm.string())
@@ -125,9 +120,7 @@ actor Main
                 var dummy: Array[U64] = [i.u64(); j.u64(); k.u64()]
                 dummy
                 end
-              // try temp(i)?(j)?(k)? = Node((counter), numNodes, triplets) end
               row.push(Node((counter), numNodes, triplets, startTime))
-              // env.out.print(i.string() + " " + j.string() + " " + k.string())
               if counter >= numNodes then
                 x_final = i.u64()
                 y_final = j.u64()
@@ -141,8 +134,6 @@ actor Main
         end
         temp
       end
-      // env.out.print("x y z values are " + x_cord.string() + " " + y_cord.string() + " " + y_cord.string())
-      // env.out.print("Alternate x y z values are " + x_final.string() + " " + y_final.string() + " " + z_final.string())
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorGossipImp3DGrid(nodePool, env, x_cord, y_cord, z_cord) end
     end
   elseif algorithm.string() == "PushSum" then
@@ -202,9 +193,7 @@ actor Main
                 var dummy: Array[U64] = [i.u64(); j.u64(); k.u64()]
                 dummy
                 end
-              // try temp(i)?(j)?(k)? = Node((counter), numNodes, triplets) end
               row.push(Node((counter), numNodes, triplets, startTime))
-              // env.out.print(i.string() + " " + j.string() + " " + k.string())
               if counter >= numNodes then
                 x_final = i.u64()
                 y_final = j.u64()
@@ -218,8 +207,6 @@ actor Main
         end
         temp
       end
-      // env.out.print("x y z values are " + x_cord.string() + " " + y_cord.string() + " " + y_cord.string())
-      // env.out.print("Alternate x y z values are " + x_final.string() + " " + y_final.string() + " " + z_final.string())
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorPushSum3DGrid(nodePool, env, x_cord, y_cord, z_cord, U64(0).f64(), U64(0).f64()) end
     | "Imp3d Grid" => 
       env.out.print("Starting " + topology.string() + " " + algorithm.string())
@@ -248,9 +235,7 @@ actor Main
                 var dummy: Array[U64] = [i.u64(); j.u64(); k.u64()]
                 dummy
                 end
-              // try temp(i)?(j)?(k)? = Node((counter), numNodes, triplets) end
               row.push(Node((counter), numNodes, triplets, startTime))
-              // env.out.print(i.string() + " " + j.string() + " " + k.string())
               if counter >= numNodes then
                 x_final = i.u64()
                 y_final = j.u64()
@@ -264,15 +249,9 @@ actor Main
         end
         temp
       end
-      // env.out.print("x y z values are " + x_cord.string() + " " + y_cord.string() + " " + y_cord.string())
-      // env.out.print("Alternate x y z values are " + x_final.string() + " " + y_final.string() + " " + z_final.string())
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorPushSum3DGrid(nodePool, env, x_cord, y_cord, z_cord, U64(0).f64(), U64(0).f64()) end
     end
   end
-  // printTime(env)
-
-  // fun printTime(env: Env) =>
-  //   env.out.print(Time.seconds().string())
 
 actor Node
   var name: U64
@@ -295,13 +274,10 @@ actor Node
     rand = Rand.from_u64(Time.cycles())
 
   be spreadRumorGossipLine(nodePool': Array[Node] val, env: Env) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
-      // env.out.print(name.string() + " " + rumorCount.string())
       return
     end
     rumorCount = rumorCount + 1
-    // env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
     if rumorCount >= 10 then
       env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -310,7 +286,6 @@ actor Node
       return
     end
     if (name > 1) and (name < (numNodes)) then
-        // var rand: Rand = Rand.from_u64(Time.cycles())
         var dice1 = rand.int[U64](2)
         if dice1 == 1 then
           try nodePool'(U64(name - 1).usize() - 1)?.spreadRumorGossipLine(nodePool', env) end
@@ -327,12 +302,10 @@ actor Node
     end
 
   be spreadRumorGossipFull(nodePool': Array[Node] val, env: Env) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
       return
     end
     rumorCount = rumorCount + 1
-    // env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
     if rumorCount >= 10 then
       env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -340,22 +313,14 @@ actor Node
       notAvailable = true
       return
     end
-    // var rand: Rand = Rand.from_u64(Time.nanos())
     var dice1 = rand.int[U64](numNodes)
-    // while dice1 == (name - 1) do
-    //   rand = Rand.from_u64(Time.cycles())
-    //   dice1 = rand.int[U64](numNodes)
-    // end
     try nodePool'(U64(dice1).usize())?.spreadRumorGossipFull(nodePool', env) end
 
   be spreadRumorGossip3DGrid(nodePool': Array[Array[Array[Node]]] val, env: Env, x': U64, y': U64, z': U64) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
-      // env.out.print(name.string() + " " + rumorCount.string())
       return
     end
     rumorCount = rumorCount + 1
-    // env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
     if rumorCount >= 10 then
       env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -363,7 +328,6 @@ actor Node
       notAvailable = true
       return
     end
-    // var rand: Rand = Rand.from_u64(Time.cycles())
     var dice1 = rand.int[U64](2)
     try
       var x = triplets(0)?
@@ -372,7 +336,6 @@ actor Node
       var outbounds: Bool = true
       while outbounds do
         if dice1 == 1 then
-          // env.out.print("In loop 1")
           var dice2 = rand.int[U64](3)
           if dice2 == 0 then
             x = x + 1
@@ -391,7 +354,6 @@ actor Node
             z = triplets(2)?
           end
         elseif dice1 == 0 then
-          // env.out.print("In loop 0")
           var dice2 = rand.int[U64](3)
           if dice2 == 0 then
             x = x - 1
@@ -411,18 +373,14 @@ actor Node
           end
         end
       end
-      // env.out.print(x.string() + " " + y.string() + " " + z.string())
       try nodePool'(x.usize())?(y.usize())?(z.usize())?.spreadRumorGossip3DGrid(nodePool', env, x', y', z') end
     end
 
   be spreadRumorGossipImp3DGrid(nodePool': Array[Array[Array[Node]]] val, env: Env, x': U64, y': U64, z': U64) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
-      // env.out.print(name.string() + " " + rumorCount.string())
       return
     end
     rumorCount = rumorCount + 1
-    // env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
     if rumorCount >= 10 then
       env.out.print("rumorCount for Node " + name.string() + " is " + rumorCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -430,7 +388,6 @@ actor Node
       notAvailable = true
       return
     end
-    // var rand: Rand = Rand.from_u64(Time.cycles())
     var dice1 = rand.int[U64](2)
     try
       var x = triplets(0)?
@@ -439,7 +396,6 @@ actor Node
       var outbounds: Bool = true
       while outbounds do
         if dice1 == 1 then
-          // env.out.print("In loop 1")
           var dice2 = rand.int[U64](4)
           if dice2 == 0 then
             x = x + 1
@@ -462,7 +418,6 @@ actor Node
             z = triplets(2)?
           end
         elseif dice1 == 0 then
-          // env.out.print("In loop 0")
           var dice2 = rand.int[U64](4)
           if dice2 == 0 then
             x = x - 1
@@ -486,13 +441,10 @@ actor Node
           end
         end
       end
-      // env.out.print(x.string() + " " + y.string() + " " + z.string())
       try nodePool'(x.usize())?(y.usize())?(z.usize())?.spreadRumorGossipImp3DGrid(nodePool', env, x', y', z') end
     end
   
   be spreadRumorPushSumLine(nodePool': Array[Node] val, env: Env, s': F64, w': F64) =>
-    // env.out.print(name.string())
-    // env.out.print(name.string() + " " + changeCount.string())
     if notAvailable then
       return
     end
@@ -500,17 +452,12 @@ actor Node
     var newW = w + w'
     var newRatio = (newS / newW)
     var ratio = s / w
-    // env.out.print("changeCount:" + " " + changeCount.string())
-    // env.out.print("ratio:" + " " + ratio.string())
-    // env.out.print("newRatio:" + " " + newRatio.string())
     var difference = (newRatio - ratio).abs()
-    // env.out.print("difference:" + " " + difference.string())
     if difference <= (1 / (U64(10).f64().pow(10))) then
       changeCount = changeCount + 1
     else
       changeCount = 0
     end
-    // env.out.print("changeCount for Node " + name.string() + " is " + changeCount.string())
     if changeCount >= 3 then
       env.out.print("chnageCount for Node " + name.string() + " is " + changeCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -521,7 +468,6 @@ actor Node
     s = newS
     w = newW
     if (name > 1) and (name < (numNodes)) then
-        // var rand: Rand = Rand.from_u64(Time.cycles())
         var dice1 = rand.int[U64](2)
         if dice1 == 1 then
           try nodePool'(U64(name - 1).usize() - 1)?.spreadRumorPushSumLine(nodePool', env, (newW / 2), (newS / 2)) end
@@ -551,7 +497,6 @@ actor Node
     else
       changeCount = 0
     end
-    // env.out.print("changeCount for Node " + name.string() + " is " + changeCount.string())
     if changeCount >= 3 then
       env.out.print("chnageCount for Node " + name.string() + " is " + changeCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -561,7 +506,6 @@ actor Node
     end
     s = newS
     w = newW
-    // var rand: Rand = Rand.from_u64(Time.cycles())
     var dice1 = rand.int[U64](numNodes)
     while dice1 == (name - 1) do
       rand = Rand.from_u64(Time.cycles())
@@ -570,7 +514,6 @@ actor Node
     try nodePool'(dice1.usize() - 1)?.spreadRumorPushSumLine(nodePool', env, (newW / 2), (newS / 2)) end
 
   be spreadRumorPushSum3DGrid(nodePool': Array[Array[Array[Node]]] val, env: Env, x': U64, y': U64, z': U64, s': F64, w': F64) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
       return
     end
@@ -584,7 +527,6 @@ actor Node
     else
       changeCount = 0
     end
-    // env.out.print("changeCount for Node " + name.string() + " is " + changeCount.string())
     if changeCount >= 3 then
       env.out.print("chnageCount for Node " + name.string() + " is " + changeCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -594,7 +536,6 @@ actor Node
     end
     s = newS
     w = newW
-    // var rand: Rand = Rand.from_u64(Time.cycles())
     var dice1 = rand.int[U64](2)
     try
       var x = triplets(0)?
@@ -603,7 +544,6 @@ actor Node
       var outbounds: Bool = true
       while outbounds do
         if dice1 == 1 then
-          // env.out.print("In loop 1")
           var dice2 = rand.int[U64](3)
           if dice2 == 0 then
             x = x + 1
@@ -622,7 +562,6 @@ actor Node
             z = triplets(2)?
           end
         elseif dice1 == 0 then
-          // env.out.print("In loop 0")
           var dice2 = rand.int[U64](3)
           if dice2 == 0 then
             x = x - 1
@@ -642,12 +581,10 @@ actor Node
           end
         end
       end
-      // env.out.print(x.string() + " " + y.string() + " " + z.string())
       try nodePool'(x.usize())?(y.usize())?(z.usize())?.spreadRumorPushSum3DGrid(nodePool', env, x', y', z', (newW / 2), (newS / 2)) end
     end
 
   be spreadRumorPushSumImp3DGrid(nodePool': Array[Array[Array[Node]]] val, env: Env, x': U64, y': U64, z': U64, s': F64, w': F64) =>
-    // env.out.print(name.string() + " " + rumorCount.string())
     if notAvailable then
       return
     end
@@ -661,7 +598,6 @@ actor Node
     else
       changeCount = 0
     end
-    // env.out.print("changeCount for Node " + name.string() + " is " + changeCount.string())
     if changeCount >= 3 then
       env.out.print("chnageCount for Node " + name.string() + " is " + changeCount.string())
       env.out.print("Terminated at Node " + " " + name.string())
@@ -671,7 +607,6 @@ actor Node
     end
     s = newS
     w = newW
-    // var rand: Rand = Rand.from_u64(Time.cycles())
     var dice1 = rand.int[U64](2)
     try
       var x = triplets(0)?
@@ -680,7 +615,6 @@ actor Node
       var outbounds: Bool = true
       while outbounds do
         if dice1 == 1 then
-          // env.out.print("In loop 1")
           var dice2 = rand.int[U64](4)
           if dice2 == 0 then
             x = x + 1
@@ -703,7 +637,6 @@ actor Node
             z = triplets(2)?
           end
         elseif dice1 == 0 then
-          // env.out.print("In loop 0")
           var dice2 = rand.int[U64](4)
           if dice2 == 0 then
             x = x - 1
@@ -727,6 +660,5 @@ actor Node
           end
         end
       end
-      // env.out.print(x.string() + " " + y.string() + " " + z.string())
       try nodePool'(x.usize())?(y.usize())?(z.usize())?.spreadRumorPushSumImp3DGrid(nodePool', env, x', y', z', (newW / 2), (newS / 2)) end
     end
