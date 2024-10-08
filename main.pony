@@ -181,10 +181,8 @@ actor Main
     | "3d Grid" => 
       env.out.print("Starting " + topology.string() + " " + algorithm.string())
       var x_cord: U64 = U64(numNodes).f64().cbrt().ceil().u64()
-      // var y_cord: U64 = (U64(numNodes).f64()/U64(x_cord).f64()).sqrt().ceil().u64()
-      // var z_cord: U64 = (U64(numNodes).f64()/U64(x_cord * y_cord).f64()).ceil().u64()
-      var y_cord: U64 = x_cord
-      var z_cord: U64 = y_cord
+      var y_cord: U64 = (U64(numNodes).f64()/U64(x_cord).f64()).sqrt().ceil().u64()
+      var z_cord: U64 = (U64(numNodes).f64()/U64(x_cord * y_cord).f64()).ceil().u64()
       var x_final: U64 = 0
       var y_final: U64 = 0
       var z_final: U64 = 0
@@ -209,7 +207,7 @@ actor Main
               let triplets = recover val 
                 var dummy: Array[U64] = [i.u64(); j.u64(); k.u64()]
                 dummy
-                end
+              end
               row.push(Node((counter), numNodes, triplets, startTime))
               if counter >= numNodes then
                 x_final = i.u64()
@@ -266,9 +264,9 @@ actor Main
             end
             layer.push(row)
           end
-          env.out.print("Finished initialising all nodes")
           temp.push(layer)
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorPushSum3DGrid(nodePool, env, x_cord, y_cord, z_cord, U64(0).f64(), U64(0).f64()) end
