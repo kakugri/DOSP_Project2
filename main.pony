@@ -3,7 +3,7 @@ use "random"
 use "time"
 
 actor Main
-  let numNodes: U64
+  var numNodes: U64
   let topology: Stringable
   let algorithm: Stringable
 
@@ -34,6 +34,7 @@ actor Main
         for i in Range[U64](0, numNodes) do
           temp.push(Node((i + 1), numNodes, triplets, startTime))
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?.spreadRumorGossipLine(nodePool, env) end
@@ -48,6 +49,7 @@ actor Main
         for i in Range[U64](0, numNodes) do
           temp.push(Node((i + 1), numNodes, triplets, startTime))
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?.spreadRumorGossipFull(nodePool, env) end
@@ -59,6 +61,9 @@ actor Main
       var x_final: U64 = 0
       var y_final: U64 = 0
       var z_final: U64 = 0
+      y_cord = x_cord
+      z_cord = x_cord
+      numNodes = (x_cord * x_cord) * x_cord
       let nodePool = recover val
         var temp: Array[Array[Array[Node]]] = Array[Array[Array[Node]]].create()
         var counter: U64 = 0
@@ -90,9 +95,10 @@ actor Main
           end
           temp.push(layer)
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
-      try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorGossip3DGrid(nodePool, env, x_cord, y_cord, z_cord) end
+      try nodePool(U64(x_cord).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorGossip3DGrid(nodePool, env, x_cord, y_cord, z_cord) end
     | "Imp3d Grid" => 
       env.out.print("Starting " + topology.string() + " " + algorithm.string())
       var x_cord: U64 = U64(numNodes).f64().cbrt().ceil().u64()
@@ -101,6 +107,9 @@ actor Main
       var x_final: U64 = 0
       var y_final: U64 = 0
       var z_final: U64 = 0
+      y_cord = x_cord
+      z_cord = x_cord
+      numNodes = (x_cord * x_cord) * x_cord
       let nodePool = recover val
         var temp: Array[Array[Array[Node]]] = Array[Array[Array[Node]]].create()
         var counter: U64 = 0
@@ -132,6 +141,7 @@ actor Main
           end
           temp.push(layer)
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorGossipImp3DGrid(nodePool, env, x_cord, y_cord, z_cord) end
@@ -149,6 +159,7 @@ actor Main
         for i in Range[U64](0, numNodes) do
           temp.push(Node((i + 1), numNodes, triplets, startTime))
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?.spreadRumorPushSumLine(nodePool, env, U64(0).f64(), U64(0).f64()) end
@@ -163,17 +174,23 @@ actor Main
         for i in Range[U64](0, numNodes) do
           temp.push(Node((i + 1), numNodes, triplets, startTime))
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?.spreadRumorPushSumFull(nodePool, env, U64(0).f64(), U64(0).f64()) end
     | "3d Grid" => 
       env.out.print("Starting " + topology.string() + " " + algorithm.string())
       var x_cord: U64 = U64(numNodes).f64().cbrt().ceil().u64()
-      var y_cord: U64 = (U64(numNodes).f64()/U64(x_cord).f64()).sqrt().ceil().u64()
-      var z_cord: U64 = (U64(numNodes).f64()/U64(x_cord * y_cord).f64()).ceil().u64()
+      // var y_cord: U64 = (U64(numNodes).f64()/U64(x_cord).f64()).sqrt().ceil().u64()
+      // var z_cord: U64 = (U64(numNodes).f64()/U64(x_cord * y_cord).f64()).ceil().u64()
+      var y_cord: U64 = x_cord
+      var z_cord: U64 = y_cord
       var x_final: U64 = 0
       var y_final: U64 = 0
       var z_final: U64 = 0
+      y_cord = x_cord
+      z_cord = x_cord
+      numNodes = (x_cord * x_cord) * x_cord
       let nodePool = recover val
         var temp: Array[Array[Array[Node]]] = Array[Array[Array[Node]]].create()
         var counter: U64 = 0
@@ -205,6 +222,7 @@ actor Main
           end
           temp.push(layer)
         end
+        env.out.print("Finished initialising all nodes")
         temp
       end
       try nodePool(U64(0).usize())?(U64(0).usize())?(U64(0).usize())?.spreadRumorPushSum3DGrid(nodePool, env, x_cord, y_cord, z_cord, U64(0).f64(), U64(0).f64()) end
@@ -216,6 +234,9 @@ actor Main
       var x_final: U64 = 0
       var y_final: U64 = 0
       var z_final: U64 = 0
+      y_cord = x_cord
+      z_cord = x_cord
+      numNodes = (x_cord * x_cord) * x_cord
       let nodePool = recover val
         var temp: Array[Array[Array[Node]]] = Array[Array[Array[Node]]].create()
         var counter: U64 = 0
@@ -245,6 +266,7 @@ actor Main
             end
             layer.push(row)
           end
+          env.out.print("Finished initialising all nodes")
           temp.push(layer)
         end
         temp
